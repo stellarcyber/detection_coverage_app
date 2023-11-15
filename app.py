@@ -562,8 +562,7 @@ def update_and_restart():
     subprocess.call(['git', 'pull'])
     env_py = shutil.which("streamlit")
     # print(env_py)
-    # os.execv(env_py, (env_py, "run", "app.py")) # type: ignore
-    st.rerun()
+    os.execv(env_py, (env_py, "run", "app.py")) # type: ignore
 
 
 @st.cache_data
