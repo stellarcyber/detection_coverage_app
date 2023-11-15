@@ -1,5 +1,7 @@
 import streamlit as st
 import os
+import sys
+import subprocess
 import io
 import pickle
 import plotly.express as px
@@ -16,6 +18,7 @@ from urllib.parse import urlencode
 import datetime
 import time
 import urllib3
+import shutil
 warnings.simplefilter(action="ignore", category=FutureWarning)
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning) # type: ignore
 
@@ -541,6 +544,27 @@ data_source_display_name_map = {
     "mikrotik": "MikroTik firewall and router",
     "okta": "Okta",
 }
+
+def check_for_updates():
+    # Fetch updates from the remote repository
+    subprocess.call(['git', 'fetch'])
+
+    # Check if there are any updates
+    result = subprocess.check_output(['git', 'status', '-uno'])
+
+    if 'Your branch is behind' in result.decode('utf-8'):
+        return True
+    else:
+        return False
+
+def update_and_restart():
+    # Pull updates
+    subprocess.call(['git', 'pull'])
+    env_py = shutil.which("streamlit")
+    # print(env_py)
+    # os.execv(env_py, (env_py, "run", "app.py")) # type: ignore
+    st.rerun()
+
 
 @st.cache_data
 def getDetectionsAndDatasources(detections_version):
@@ -2167,6 +2191,17 @@ def main():
     )
     st.title("Detection Coverage Dashboard")
     st.caption("Version: 0.1.1")
+    if st.button('Check for Updates'):
+        with st.status("Checking for updates...", expanded=True) as updates_status:
+            st.write("Checking remote repository...")
+            if check_for_updates():
+                st.write("Found updates!")
+                updates_status.update(label="Found updates!", state="complete", expanded=True)
+                st.button('Update', type="primary", on_click=update_and_restart)  # type: ignore  # noqa: F821
+            else:
+                st.write("No updates found.")
+                updates_status.update(label="No updates found.", state="complete", expanded=False)
+
     st.subheader("Overview", divider=True)
     st.markdown(
         """
