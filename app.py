@@ -2190,7 +2190,7 @@ def main():
         },
     )
     st.title("Detection Coverage Dashboard")
-    st.caption("Version: 0.1.1")
+    st.caption("Version: 0.1.2")
     if st.button('Check for Updates'):
         with st.status("Checking for updates...", expanded=True) as updates_status:
             st.write("Checking remote repository...")
