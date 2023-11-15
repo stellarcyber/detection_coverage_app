@@ -2196,7 +2196,7 @@ def main():
             if check_for_updates():
                 st.write("Found updates!")
                 updates_status.update(label="Found updates!", state="complete", expanded=True)
-                st.button('Update and Restart', type="primary", on_click=update_and_restart)  # type: ignore  # noqa: F821
+                st.button('Update and Restart', type="primary", on_click=update_and_restart)
             else:
                 st.write("No updates found.")
                 updates_status.update(label="No updates found.", state="complete", expanded=False)
