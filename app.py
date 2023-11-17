@@ -2193,13 +2193,13 @@ def main():
     st.caption("Version: 0.1.4")
     if st.button('Check for Updates', help="This will only work if you have cloned the repository"):
         with st.status("Checking for updates...", expanded=True) as updates_status:
-            st.write("NOTE: This will only work if you have cloned the repository.")
+            st.caption("NOTE: This will only work if you have cloned the repository.")
             st.write("Checking remote repository...")
             if check_for_updates():
                 st.write("Found updates!")
                 updates_status.update(label="Found updates!", state="complete", expanded=True)
-                st.button('Update and Restart', type="primary", on_click=update_and_restart, help="This will overwrite your local files with the latest from the remote repository and restart the application.")
-                st.caption("WARNING: This will overwrite your local files with the latest from the remote repository and restart the application. If you have made any changes to the application, they will be lost unless you manually clone the branch or stash your changes.")
+                st.button('Update and Restart', type="primary", on_click=update_and_restart, help="This will perform a git pull on the repository and relaunch the application.")
+                st.caption("NOTE: This will perform a git pull on the repository and relaunch the application.")
             else:
                 st.write("No updates found.")
                 updates_status.update(label="No updates found.", state="complete", expanded=False)
