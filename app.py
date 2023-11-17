@@ -548,7 +548,6 @@ data_source_display_name_map = {
 def check_for_updates():
     # Fetch updates from the remote repository
     subprocess.call(['git', 'fetch'])
-
     # Check if there are any updates
     result = subprocess.check_output(['git', 'status', '-uno'])
 
@@ -560,6 +559,8 @@ def check_for_updates():
 def update_and_restart():
     # Pull updates
     subprocess.call(['git', 'pull'])
+    # Update any dependencies
+    subprocess.call(['pip', 'install', '-r', 'requirements.txt'])
     env_py = shutil.which("streamlit")
     # print(env_py)
     # os.execv(env_py, (env_py, "run", "app.py")) # type: ignore
