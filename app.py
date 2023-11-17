@@ -560,11 +560,12 @@ def update_and_restart():
     # Pull updates
     subprocess.call(['git', 'pull'])
     # Update any dependencies
-    subprocess.call(['pip', 'install', '-r', 'requirements.txt'])
-    env_py = shutil.which("streamlit")
+    env_py = shutil.which("python")
+    subprocess.call([env_py, '-m', 'pip', 'install', '-r', 'requirements.txt']) # type: ignore
+    env_streamlit = shutil.which("streamlit")
     # print(env_py)
     # os.execv(env_py, (env_py, "run", "app.py")) # type: ignore
-    os.execv(env_py, ("streamlit", "run", "app.py")) # type: ignore
+    os.execv(env_streamlit, ("streamlit", "run", "app.py")) # type: ignore
 
 
 @st.cache_data
