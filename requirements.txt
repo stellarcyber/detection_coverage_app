@@ -2,7 +2,7 @@ streamlit==1.28.1
 pandas==2.0.3
 numpy==1.24.3
 plotly==5.15.0
-requests==2.30.0
+requests==2.31.0
 requests-cache==1.1.0
 watchdog==3.0.0
 kaleido==0.2.1
