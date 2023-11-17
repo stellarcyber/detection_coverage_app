@@ -2192,7 +2192,7 @@ def main():
         },
     )
     st.title("Detection Coverage Dashboard")
-    st.caption("Version: 0.1.3")
+    st.caption("Version: 0.1.4")
     if st.button('Check for Updates', help="This will only work if you have cloned the repository"):
         with st.status("Checking for updates...", expanded=True) as updates_status:
             st.write("NOTE: This will only work if you have cloned the repository.")
