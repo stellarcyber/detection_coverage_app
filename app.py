@@ -559,9 +559,7 @@ def check_for_updates():
 
 def update_and_restart():
     # Pull updates
-    # subprocess.call(['git', 'pull'])
-    # Overwrite with remote changes
-    subprocess.call(['git', 'reset', '--hard', 'origin/master'])
+    subprocess.call(['git', 'pull'])
     env_py = shutil.which("streamlit")
     # print(env_py)
     # os.execv(env_py, (env_py, "run", "app.py")) # type: ignore
