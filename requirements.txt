@@ -1,13 +1,9 @@
-# streamlit
 streamlit==1.28.1
-# pandas
 pandas==2.0.3
-# numpy
 numpy==1.24.3
-# plotly
 plotly==5.15.0
-requests
-requests_cache
-watchdog
-kaleido
-PyPDF2
+requests==2.30.0
+requests-cache==1.1.0
+watchdog==3.0.0
+kaleido==0.2.1
+PyPDF2==1.28.6
