@@ -4,8 +4,8 @@ This is a Python Streamlit app as a prototype/proof of concept using the Stellar
 
 ## Getting Started
 
-1. Clone the repository: `git clone https://github.com/scse-tools/stellarcyber_coverage_app.git`
-2. Go to the cloned directory: `cd stellarcyber_coverage_app`
+1. Clone the repository: `git clone https://github.com/stellarcyber/detection_coverage_app.git`
+2. Go to the cloned directory: `cd detection_coverage_app`
 1. Install the dependencies: `pip install -r requirements.txt`  
    Tested with Python 3.10+
 2. Run the app: `streamlit run app.py`  
