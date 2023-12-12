@@ -6,4 +6,4 @@ requests==2.31.0
 requests-cache==1.1.1
 watchdog==3.0.0
 kaleido==0.2.1
-PyPDF2==1.28.6
+PyPDF2==3.0.1
