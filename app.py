@@ -638,12 +638,13 @@ class StellarCyberAPI:
         if int(time.time()) < self.token["exp"]:
             return self.token
         else:
-            response = requests.post(
-                api_url,
-                auth=(self.username, self.api_key),
-                headers=StellarCyberAPI.headers,
-                verify=False,
-            )
+            with requests_cache.disabled():
+                response = requests.post(
+                    api_url,
+                    auth=(self.username, self.api_key),
+                    headers=StellarCyberAPI.headers,
+                    verify=False,
+                )
             self.token = response.json()
             return response.json()
 
@@ -2192,7 +2193,7 @@ def main():
         },
     )
     st.title("Detection Coverage Dashboard")
-    st.caption("Version: 0.1.4")
+    st.caption("Version: 0.1.5")
     if st.button('Check for Updates', help="This will only work if you have cloned the repository"):
         with st.status("Checking for updates...", expanded=True) as updates_status:
             st.caption("NOTE: This will only work if you have cloned the repository.")
