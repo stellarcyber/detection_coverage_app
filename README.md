@@ -18,6 +18,14 @@ This is a Python Streamlit app as a prototype/proof of concept using the Stellar
 > Tested with Python 3.10+
 
 ### With Docker
+
+> [!NOTE]
+> To simply launch premade image
+1. Launch the Docker container: `docker run -p 8501:8501 ghcr.io/stellarcyber/detection_coverage_app/streamlit_coverage_analyzer:latest`
+   
+> [!NOTE]
+> To build image locally
+
 1. Build the Docker image: `docker build -t streamlit_coverage_analyzer .`
 2. Launch the Docker container: `docker run -p 8501:8501 streamlit_coverage_analyzer`
 
@@ -36,5 +44,5 @@ This is a Python Streamlit app as a prototype/proof of concept using the Stellar
 3. To stop the app: `CTRL-C`
 
 ### With Docker
-1. Launch the Docker container: `docker run -p 8501:8501 streamlit_coverage_analyzer`
+1. Launch the Docker container: `docker run -p 8501:8501 streamlit_coverage_analyzer` or `docker run -p 8501:8501 ghcr.io/stellarcyber/detection_coverage_app/streamlit_coverage_analyzer:latest`
 2. To stop the app: `CTRL-C`
