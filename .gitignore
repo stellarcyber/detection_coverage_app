@@ -1,7 +1,0 @@
-.streamlit/
-.vscode/
-logs/
-.saved
-.requests_cache.sqlite
-.DS_Store
-__pycache__
