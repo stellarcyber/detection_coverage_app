@@ -7,15 +7,15 @@ jobs:
         steps:
             - name: Checkout Code
               uses: actions/checkout@v4.2.0
-            - name: Install poetry
-              run: pipx install poetry
+            - name: Install uv
+              run: pipx install uv
             - name: Setup Python
               uses: actions/setup-python@v5.2.0
               with:
                 python-version: '3.10'
-                cache: "poetry"
+                cache: "pip"
             - name: Install Dependencies
-              run: poetry install --with dev --all-extras
+              run: uv sync
             - name: Build Documentation
               run: mkdocs build
             - name: Push Documentation to GitHub Pages
