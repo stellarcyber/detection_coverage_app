@@ -11,13 +11,10 @@ jobs:
               run: pipx install uv
             - name: Setup Python
               uses: actions/setup-python@v5.2.0
-              with:
-                python-version: '3.10'
-                cache: "pip"
             - name: Install Dependencies
               run: uv sync
             - name: Build Documentation
-              run: mkdocs build
+              run: uv run mkdocs build
             - name: Push Documentation to GitHub Pages
               run: |
-                mkdocs gh-deploy --clean
+                uv run mkdocs gh-deploy --clean
