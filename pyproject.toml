@@ -1,0 +1,101 @@
+[project]
+name = "coverage-analyzer"
+version = "0.2.0"
+description = "A Python Streamlit app for analyzing security coverage using the Stellar Cyber API and MITRE ATT&CK framework"
+readme = "README.md"
+license = { file = "LICENSE.md" }
+authors = [{ name = "Will Fales", email = "wfales@stellarcyber.ai" }]
+maintainers = [
+    { name = "Will Fales", email = "wfales@stelalrcyber.ai" },
+    { name = "Scott Bianco", email = "sbianco@stellarcyber.ai" },
+]
+requires-python = ">=3.10"
+dependencies = [
+    "great-tables>=0.13.0",
+    "loguru>=0.7.2",
+    "matplotlib>=3.9.2",
+    "mitreattack-python>=3.0.6",
+    "niquests[speedups]>=3.10.2",
+    "pandas>=2.2.3",
+    "pillow>=10.4.0",
+    "plotly>=5.24.1",
+    "polars>=1.12.0",
+    "py-machineid>=0.6.0",
+    "pyyaml>=6.0.2",
+    "requests-cache>=1.2.1",
+    "st-cookies-manager>=0.2.2",
+    "streamlit>=1.39.0",
+    "tenacity>=9.0.0",
+    "urllib3>=2.2.3",
+    "watchdog>=5.0.3",
+]
+
+
+[project.scripts]
+coverage-analyzer = "app:main"
+
+[project.urls]
+Homepage = "https://stellarcyber.ai"
+Documentation = "https://stellarcyber.github.io/detection_coverage_app"
+Repository = "https://github.com/stellarcyber/detection_coverage_app"
+Issues = "https://github.com/stellarcyber/detection_coverage_app/issues"
+
+[dependency-groups]
+dev = [
+    "black>=24.10.0",
+    "mike>=2.1.3",
+    "mkdocs>=1.6.1",
+    "mkdocs-material>=9.5.42",
+    "mkdocs-minify-plugin>=0.8.0",
+    "mkdocstrings>=0.26.2",
+    "mkdocstrings-python>=1.12.2",
+    "pre-commit>=4.0.1",
+    "pyinstaller>=6.11.0",
+    "pymdown-extensions>=10.12",
+    "pytest>=8.3.3",
+    "ruff>=0.7.1",
+    "pytest-xdist>=3.6.1",
+    "pytest-cov>=6.0.0",
+]
+
+[tool.coverage.run]
+omit = ["tests/*", "coverage_analyzer/__init__.py"]
+data_file = "tests/.coverage"
+
+[tool.coverage.report]
+format = "markdown"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+addopts="-n 8"
+
+
+[tool.ruff]
+line-length = 88
+target-version = "py310"
+
+[tool.ruff.lint]
+select = [
+    "E4",
+    "E7",
+    "E9",
+    "F",
+    "B",
+    "C90",
+    "N",
+    "UP",
+    "FBT",
+    "C4",
+    "DTZ",
+    "PIE",
+    "PYI",
+    "PTH",
+    "PD",
+    "PLE"
+]
+unfixable = ["B"]
+
+[tool.ruff.format]
+quote-style = "double"
+line-ending = "auto"

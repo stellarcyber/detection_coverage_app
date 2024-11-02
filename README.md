@@ -1,48 +1,126 @@
-# Stellar Cyber Coverage Dashboard Streamlit App
+> [!IMPORTANT]  
+> 11/2/2024: **Important Update**
+> Major changes to the application have been made. Please review the updated documentation for the latest information. 
 
-This is a Python Streamlit app as a prototype/proof of concept using the Stellar Cyber Public API and the data from https://detections.stellarcyber.ai to calculate coverage and provide data source recommendations as well as simulate the coverage of those recommendations.
 
-## Getting Started
+# Coverage Analyzer
 
-### With Python
+A Python Streamlit application for analyzing security coverage using the Stellar Cyber API and MITRE ATT&CK framework. This tool provides comprehensive analysis of current and simulated detection coverage, enabling informed decisions about security posture.
 
-1. Clone the repository: `git clone https://github.com/stellarcyber/detection_coverage_app.git`
-2. Go to the cloned directory: `cd detection_coverage_app`
-3. Install the dependencies: `pip install -r requirements.txt`  or `pip3 install -r requirements.txt`
-4. Run the app: `streamlit run app.py`  
-   It should open a tab in your browser. (Tested in Chrome)
-5. To stop the app: `CTRL-C`
+## Quick Start
 
-> [!NOTE]
-> To make sure you can run `streamlit`, make sure your python bin directory is added to your `PATH`. Alternatively you can use the absolute path to `streamlit` to run it.
-> Tested with Python 3.10+
+### Pre-built Executables (Recommended)
 
-### With Docker
+Download from our [GitHub Releases page](https://github.com/stellarcyber/detection_coverage_app/releases) and follow the platform-specific installation instructions.
 
-> [!NOTE]
-> To simply launch premade image
-1. Launch the Docker container: `docker run -p 8501:8501 ghcr.io/stellarcyber/detection_coverage_app/streamlit_coverage_analyzer:latest`
-   
-> [!NOTE]
-> To build image locally
+### Manual Installation (Development)
 
-1. Build the Docker image: `docker build -t streamlit_coverage_analyzer .`
-2. Launch the Docker container: `docker run -p 8501:8501 streamlit_coverage_analyzer`
+=== "Using uv (Recommended)"
+    #### Clone repository
 
-## Project Structure
+    ```bash
+    git clone https://github.com/stellarcyber/detection_coverage_app.git
+    cd detection_coverage_app
+    ```
 
-- `app.py`: This file is the entry point of the Streamlit application. It sets up the user interface and the functionality of the app.
-- `requirements.txt`: This file lists the dependencies required for the project. It is used by pip to install the dependencies.
-- `README.md`: This file contains the documentation for the project. It provides information on how to set up and run the Streamlit app.
+    #### Install dependencies with uv
+    ```bash
+    uv sync
+    ```
 
-## Usage
+    #### Run with uv
+    ```bash
+    uv run run.py
+    ```
 
-### Directly with python
+    #### OR
+    ```bash
+    uv run streamlit run app.py
+    ```
 
-1. Run the app: `streamlit run app.py`
-2. Follow the instructions on the app to use it.
-3. To stop the app: `CTRL-C`
+=== "Using Pip"
+    #### Clone repository
+    ```bash
+    git clone https://github.com/stellarcyber/detection_coverage_app.git
+    cd detection_coverage_app
+    ```
 
-### With Docker
-1. Launch the Docker container: `docker run -p 8501:8501 streamlit_coverage_analyzer` or `docker run -p 8501:8501 ghcr.io/stellarcyber/detection_coverage_app/streamlit_coverage_analyzer:latest`
-2. To stop the app: `CTRL-C`
+    #### Create and activate virtual environment
+    ```bash
+    python3 -m venv .venv
+    source .venv/bin/activate  # Unix/macOS
+    ```
+
+    #### or
+    ```bash
+    .venv\Scripts\activate     # Windows
+    ```
+
+    #### Install dependencies
+    ```bash
+    pip install -r requirements.txt
+    ```
+
+    #### Run using streamlit
+    ```bash
+    streamlit run app.py
+    ```
+
+    #### OR
+    ```bash
+    python run.py
+    ```
+
+### Docker Usage
+
+#### Pull and run container
+```bash
+docker pull ghcr.io/stellarcyber/detection_coverage_app/coverage_analyzer:latest
+docker run -p 8501:8501 coverage_analyzer
+```
+
+## Documentation
+
+- [Quickstart Guide](docs/index.md) - Getting started and troubleshooting
+- [API Reference](docs/api.md) - Comprehensive API documentation
+- [Development Guide](docs/development.md) - Development workflow and testing
+
+## Contributing
+
+1. Fork the repository
+2. Create a feature branch
+3. Make your changes
+4. Run tests and quality checks
+5. Submit a pull request
+
+## License
+
+This project is licensed under the MIT License - see [LICENSE.md](LICENSE.md) for details.
+
+## Acknowledgments
+
+- MITRE ATT&CK® framework
+- Stellar Cyber platform
+- Open source community
+- Streamlit framework
+- Python ecosystem
+
+## Support
+
+- Documentation: [docs/](docs/)
+- Issues: GitHub Issues
+- Community: Discussions
+- Professional: Contact maintainers
+
+## Project Status
+
+- Version: 0.2.0
+- Status: Active Development
+- Python: 3.10+
+- Platform: Cross-platform
+
+## Related Projects
+
+- [MITRE ATT&CK](https://attack.mitre.org/)
+- [Stellar Cyber](https://stellarcyber.ai/)
+- [Streamlit](https://streamlit.io/)
