@@ -1,0 +1,52 @@
+site_name: Coverage Analyzer Docs
+site_description: Documentation for the Stellar Cyber Coverage Analyzer Streamlit App.
+site_url: https://stellarcyber.github.io/detection_coverage_app
+repo_url: https://github.com/stellarcyber/detection_coverage_app
+repo_name: GitHub
+theme: 
+  name: material
+  logo: images/logo.png
+  favicon: images/favicon.ico
+  features:
+    - content.code.copy
+    - search.suggest
+    - search.highlight
+    - search.share
+plugins:
+  - search
+  - minify:
+      minify_html: true
+      minify_js: true
+      minify_css: true
+      htmlmin_opts:
+          remove_comments: true
+  - mkdocstrings:
+      handlers:
+        python:
+          options:
+            show_source: false
+            show_root_heading: true
+            show_root_full_path: false
+            show_symbol_type_heading: true
+            show_symbol_type_toc: true
+            docstring_style: google
+            docstring_section_style: table
+            modernize_annotations: true
+markdown_extensions:
+  - def_list
+  - admonition
+  - pymdownx.details
+  - pymdownx.superfences
+  - pymdownx.tabbed:
+      alternate_style: true
+nav:
+  - Quickstart: index.md
+  - Advanced:
+    - Installation: installation.md
+    - Development: development.md
+    - Testing: testing.md
+  - API Reference:
+    - API Overview: api.md
+    - StreamlitCoverageAnalyzer: streamlitcoverageanalyzer.md
+    - StellarMitre: stellarmitre.md
+    - StellarCyberAPI: stellarcyberapi.md

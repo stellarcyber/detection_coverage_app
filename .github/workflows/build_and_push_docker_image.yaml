@@ -1,10 +1,13 @@
 name: Build and Push Docker Image
 
 on:
-  push:
-    branches:
-      - main
+  # push:
+  #   branches:
+  #     - main
   workflow_dispatch:
+
+env:
+  TOOL_VERSION: "v0.2.0"
 
 jobs:
   build_and_push:
@@ -29,7 +32,7 @@ jobs:
         context: .
         file: ./Dockerfile
         push: true
-        tags: ghcr.io/${{ github.repository }}/streamlit_coverage_analyzer:latest
+        tags: ghcr.io/${{ github.repository }}/coverage_analyzer:${{ env.TOOL_VERSION }}
         platforms: linux/amd64,linux/arm64
         cache-from: type=gha
         cache-to: type=gha,mode=max

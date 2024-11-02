@@ -1,0 +1,145 @@
+name: Build Coverage Analyzer Executable
+
+# Controls when the workflow will run
+on:
+  # Triggers the workflow on push or pull request events but only for the "main" branch
+#   push:
+#     branches: [ "main" ]
+  # pull_request:
+  #   branches: [ "main" ]
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+env:
+  TOOL_VERSION: "v0.2.0"
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        os: [macos-14, macos-13, ubuntu-latest, windows-latest]
+        include:
+          - os: macOS-14
+            version: macos-arm64
+          - os: macOS-13
+            version: macos-intel
+          - os: ubuntu-latest
+            version: linux
+          - os: windows-latest
+            version: windows
+    runs-on: ${{ matrix.os }}
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4.2.0
+
+      - name: Install uv
+        run: pipx install uv
+
+      - name: Setup Python
+        uses: actions/setup-python@v5.2.0
+        with:
+          python-version: '3.10'
+          cache: "uv"
+      
+      # - name: Setup Poetry
+      #   uses: Gr1N/setup-poetry@v9
+
+      - if: runner.os == 'macOS'
+        uses: apple-actions/import-codesign-certs@v3
+        with: 
+          p12-file-base64: ${{ secrets.CERTIFICATES_P12 }}
+          p12-password: ${{ secrets.CERTIFICATES_P12_PASSWORD }}
+      
+      - name: Install Dependencies
+        run: uv install --with dev --all-extras
+      
+      - name: Build with Pyinstaller
+        shell: bash
+        run: |
+          uv run pyinstaller --clean -y \
+            --onedir \
+            --console \
+            --add-binary "app.py:." \
+            --add-data "docs/images/logo.png:docs/images" \
+            --collect-all streamlit \
+            --copy-metadata streamlit \
+            --collect-submodules coverage_analyzer \
+            --hidden-import loguru \
+            --hidden-import niquests \
+            --hidden-import st_cookies_manager \
+            --collect-data st_cookies_manager \
+            --hidden-import mitreattack \
+            --hidden-import machineid \
+            --hidden-import requests_cache \
+            --hidden-import polars \
+            --collect-submodules urllib3 \
+            --exclude-module langchain \
+            --name coverage-analyzer \
+            run.py
+          mkdir -p release
+          rm -rf release/*
+
+      - name: Windows and Linux Packaging
+        if: runner.os != 'macOS'
+        shell: bash
+        run: |
+          cd dist/ && tar -czvf ../release/coverage_analyzer-${{ matrix.version }}-${{ env.TOOL_VERSION }}.tar.gz ./coverage-analyzer
+      
+      - name: macOS Signing and Packaging
+        if: runner.os == 'macOS'
+        shell: bash
+        run: |
+          codesign \
+            --deep \
+            --force \
+            --options=runtime \
+            --entitlements ./entitlements.plist \
+            --sign ${{ secrets.DEVELOPER_APPLICATION_HASH }} \
+            --timestamp \
+            ./dist/coverage-analyzer.app
+          chmod +x Scripts/postinstall
+          mkdir -p /tmp/coverage-analyzer/ && rm -rf /tmp/coverage-analyzer/*
+          ditto ./dist/coverage-analyzer.app /tmp/coverage-analyzer/coverage-analyzer.app
+          pkgbuild \
+            --root /tmp/coverage-analyzer/ \
+            --component-plist ./component.plist \
+            --identifier "ai.stellarcyber.cse.coverage-analyzer.pkg" \
+            --scripts ./Scripts \
+            --install-location /Applications \
+            Deployment.pkg
+          productbuild \
+            --synthesize \
+            --package Deployment.pkg \
+            Distribution.xml
+          productbuild \
+            --distribution Distribution.xml \
+            --package-path . \
+            --sign ${{ secrets.DEVELOPER_INSTALLER_HASH }} \
+            --timestamp \
+            release/coverage_analyzer-${{ matrix.version }}-${{ env.TOOL_VERSION }}.pkg
+          
+      - name: macOS Notarization and Stapling
+        if: runner.os == 'macOS'
+        shell: bash
+        run: |
+          xcrun notarytool submit \
+            --wait \
+            --apple-id "${{ secrets.DEV_APPLE_ID }}" \
+            --password "${{ secrets.APPLE_APP_PASSWORD }}" \
+            --team-id "${{ secrets.APPLE_TEAM_ID }}" \
+            --progress release/coverage_analyzer-${{ matrix.version }}-${{ env.TOOL_VERSION }}.pkg
+          xcrun stapler staple release/coverage_analyzer-${{ matrix.version }}-${{ env.TOOL_VERSION }}.pkg
+
+      - name: Release
+        uses: ncipollo/release-action@v1.14.0
+        with:
+          artifacts: |
+            release/*.tar.gz
+            release/*.pkg
+          bodyFile: RELEASE.md
+          omitBody: false
+          prerelease: true
+          allowUpdates: true
+          tag: ${{ env.TOOL_VERSION }}
+          makeLatest: true
