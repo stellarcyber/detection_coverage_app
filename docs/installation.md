@@ -193,14 +193,14 @@ After installation:
    export STREAMLIT_SERVER_PORT=8502
    ```
 
-3. **Permission Issues**
+<!-- 3. **Permission Issues**
    - macOS: Verify installer completed successfully
    - Windows/Linux: Check PATH configuration
    - Docker: Ensure proper permissions for port binding
 
 4. **Missing Dependencies**
    - Pre-built executables: Verify library directory is with executable
-   - Python install: Check Python version compatibility
+   - Python install: Check Python version compatibility -->
 
 ### Environment Setup
 
@@ -218,7 +218,7 @@ For development installations:
    where python  # Windows
    ```
 
-## Updating
+<!-- ## Updating
 
 ### Pre-built Executables
 1. Download latest release
@@ -228,12 +228,12 @@ For development installations:
 ### Docker
 ```bash
 docker pull ghcr.io/stellarcyber/detection_coverage_app/coverage_analyzer:latest
-```
+``` -->
 
 
-## Notes
+<!-- ## Notes
 
 - Pre-built executables are the recommended installation method
 - Docker supports both arm64 and amd64 architectures
 - Manual installation is primarily for development
-- Keep your installation up to date for latest features and security updates
+- Keep your installation up to date for latest features and security updates -->
