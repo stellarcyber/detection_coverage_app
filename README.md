@@ -11,61 +11,57 @@ A Python Streamlit application for analyzing security coverage using the Stellar
 
 ### Manual Installation
 
-=== "Using uv (Recommended)"
-    #### Clone repository
+####Using uv (Recommended)
+Clone repository
+```bash
+git clone https://github.com/stellarcyber/detection_coverage_app.git
+cd detection_coverage_app
+```
+Sync dependencies
+```bash
+uv sync
+```
 
-    ```bash
-    git clone https://github.com/stellarcyber/detection_coverage_app.git
-    cd detection_coverage_app
-    ```
+Run with uv
+```bash
+uv run run.py
+```
+OR
+```bash
+uv run streamlit run app.py
+```
 
-    #### Install dependencies with uv
-    ```bash
-    uv sync
-    ```
+#### Using Pip"
+Clone repository
+```bash
+git clone https://github.com/stellarcyber/detection_coverage_app.git
+cd detection_coverage_app
+```
 
-    #### Run with uv
-    ```bash
-    uv run run.py
-    ```
+Create and activate virtual environment
+```bash
+python3 -m venv .venv
+source .venv/bin/activate  # Unix/macOS
+```
 
-    #### OR
-    ```bash
-    uv run streamlit run app.py
-    ```
+or for Windows
+```bash
+.venv\Scripts\activate
+```
 
-=== "Using Pip"
-    #### Clone repository
-    ```bash
-    git clone https://github.com/stellarcyber/detection_coverage_app.git
-    cd detection_coverage_app
-    ```
+Install dependencies
+```bash
+pip install -r requirements.txt
+```
 
-    #### Create and activate virtual environment
-    ```bash
-    python3 -m venv .venv
-    source .venv/bin/activate  # Unix/macOS
-    ```
-
-    #### or
-    ```bash
-    .venv\Scripts\activate     # Windows
-    ```
-
-    #### Install dependencies
-    ```bash
-    pip install -r requirements.txt
-    ```
-
-    #### Run using streamlit
-    ```bash
-    streamlit run app.py
-    ```
-
-    #### OR
-    ```bash
-    python run.py
-    ```
+Run using streamlit
+```bash
+streamlit run app.py
+```
+OR
+```bash
+python run.py
+```
 
 ### Docker Usage
 
