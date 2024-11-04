@@ -60,6 +60,7 @@ jobs:
             --onefile \
             --console \
             --add-binary "app.py:." \
+            --add-binary "coverage_analyzer/*.py:coverage_analyzer/" \
             --add-data "docs/images/logo.png:docs/images" \
             --collect-all streamlit \
             --copy-metadata streamlit \
