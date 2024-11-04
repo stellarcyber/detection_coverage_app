@@ -2,7 +2,7 @@
 
 ## Installation Methods
 
-### 1. Pre-built Executables (Recommended)
+<!-- ### 1. Pre-built Executables (Recommended)
 
 The fastest and easiest way to get started is by downloading our pre-built executables from the [GitHub Releases page](https://github.com/stellarcyber/detection_coverage_app/releases).
 
@@ -29,31 +29,9 @@ The fastest and easiest way to get started is by downloading our pre-built execu
    ```bash
    echo 'export PATH="/opt/coverage-analyzer:$PATH"' >> ~/.bashrc
    source ~/.bashrc
-   ```
+   ``` -->
 
-### 2. Docker Installation (arm64/amd64)
-
-Our Docker image supports both arm64 and amd64 architectures.
-
-=== "Using Pre-built Image"
-    ```bash
-    # Pull the image
-    docker pull ghcr.io/stellarcyber/detection_coverage_app/coverage_analyzer:latest
-
-    # Run the container
-    docker run -p 8501:8501 ghcr.io/stellarcyber/detection_coverage_app/coverage_analyzer:latest
-    ```
-
-=== "Building Locally"
-    ```bash
-    # Build the image
-    docker build -t coverage_analyzer .
-    
-    # Run the container
-    docker run -p 8501:8501 coverage_analyzer
-    ```
-
-### 3. Manual Installation (Development)
+### 1. Manual Installation
 
 For development or customization purposes, you can install from source:
 
@@ -119,6 +97,30 @@ For development or customization purposes, you can install from source:
     ```bash
     python run.py
     ```
+
+### 2. Docker Installation (arm64/amd64)
+
+Our Docker image supports both arm64 and amd64 architectures.
+
+=== "Using Pre-built Image"
+    ```bash
+    # Pull the image
+    docker pull ghcr.io/stellarcyber/detection_coverage_app/coverage_analyzer:latest
+
+    # Run the container
+    docker run -p 8501:8501 ghcr.io/stellarcyber/detection_coverage_app/coverage_analyzer:latest
+    ```
+
+=== "Building Locally"
+    ```bash
+    # Build the image
+    docker build -t coverage_analyzer .
+    
+    # Run the container
+    docker run -p 8501:8501 coverage_analyzer
+    ```
+
+
 
 ## Running the Application
 
