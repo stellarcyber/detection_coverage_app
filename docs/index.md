@@ -1,6 +1,6 @@
 # Coverage Analyzer Documentation
 
-!!! tip "Quick Start"
+<!-- !!! tip "Quick Start"
     1. Download the pre-built executable from our [GitHub Releases page](https://github.com/stellarcyber/detection_coverage_app/releases)
     2. Install and run:
        ```bash
@@ -12,7 +12,7 @@
 
        # For headless environments (e.g., servers):
        coverage-analyzer --headless
-       ```
+       ``` -->
 
 ## Overview
 
@@ -20,34 +20,20 @@ The Coverage Analyzer is a Streamlit-based dashboard application that provides c
 
 ## Installation Options
 
-1. **Pre-built Executables (Recommended)**
+<!-- 1. **Pre-built Executables (Recommended)**
       - Fastest way to get started
       - No Python environment needed
-      - Available for macOS (native installer), Windows and Linux (amd64)
+      - Available for macOS (native installer), Windows and Linux (amd64) -->
 
+1. **Manual Python**
+      - Requires Python 3.10+
+      - Can be installed locally and run locally. uv or pip used to install dependencies.
 2. **Docker Container**
       - Platform independent
       - Supports both arm64 and amd64
       - Ideal for cloud deployments
 
-3. **Python Package**
-      - For development and customization
-      - Requires Python 3.10+
-      - Can be installed locally with pip or Poetry
-
 See the [Installation Guide](installation.md) for detailed instructions.
-
-## Key Features
-
-Feature | Description
----|---
-Real-time Analysis | Live coverage analysis with automatic updates
-Interactive Visualizations | Dynamic charts and graphs for data exploration
-Data Source Recommendations | Smart suggestions for improving coverage
-Performance Metrics | Detailed performance and efficiency tracking
-MITRE ATT&CK Integration | Complete framework integration with mapping
-Multi-tenant Support | Support for multiple tenant environments
-Headless Mode | Support for non-GUI environments
 
 ## Architecture
 
