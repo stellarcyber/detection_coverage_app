@@ -9,11 +9,7 @@ A Python Streamlit application for analyzing security coverage using the Stellar
 
 ## Quick Start
 
-### Pre-built Executables (Recommended)
-
-Download from our [GitHub Releases page](https://github.com/stellarcyber/detection_coverage_app/releases) and follow the platform-specific installation instructions.
-
-### Manual Installation (Development)
+### Manual Installation
 
 === "Using uv (Recommended)"
     #### Clone repository
