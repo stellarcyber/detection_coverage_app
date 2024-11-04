@@ -54,24 +54,8 @@ Component | Description
 [StellarMitre](stellarmitre.md) | Manages MITRE ATT&CK framework integration
 [StreamlitCoverageAnalyzer](streamlitcoverageanalyzer.md) | Core application logic and analysis
 UI Components | Dashboard layout and interactive elements
+App | Main application entry point and state management
 
-## Performance Features
-
-Feature | Description
----|---
-Data Processing | Efficient Polars-based data manipulation
-Caching | Multi-level caching strategy
-Visualization | Optimized Plotly configurations
-Memory Management | Smart resource allocation and cleanup
-
-## Security Features
-
-Feature | Description
----|---
-Authentication | Secure API key and token management
-Data Protection | SSL verification and encryption
-Access Control | Role-based access control
-Monitoring | Comprehensive security logging
 
 ## Getting Started
 
