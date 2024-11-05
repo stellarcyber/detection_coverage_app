@@ -23,6 +23,7 @@ dependencies = [
     "py-machineid>=0.6.0",
     "pyyaml>=6.0.2",
     "requests-cache>=1.2.1",
+    "setuptools>=75.3.0",
     "st-cookies-manager>=0.2.2",
     "streamlit>=1.39.0",
     "tenacity>=9.0.0",
