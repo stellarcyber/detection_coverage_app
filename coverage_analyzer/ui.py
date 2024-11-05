@@ -107,7 +107,7 @@ def recommended_data_sources():
 
 
 @st.dialog("Add New Configuration")
-def config_dialog(callback: Callable, edit: bool | None = None) -> None:
+def config_dialog(callback: Callable, edit: bool | None = False) -> None:
     """
     Display configuration dialog with improved validation and user feedback.
 
