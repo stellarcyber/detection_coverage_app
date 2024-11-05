@@ -132,7 +132,7 @@ def config_dialog(callback: Callable, edit: bool | None = None) -> None:
             help="Your Stellar Cyber Host, Ex. example.stellarcyber.cloud",
             autocomplete="host",
             placeholder="example.stellarcyber.ai",
-            value=config["host"],
+            value=config["host"] if edit else "",
         )
 
         stellar_cyber_user = st.text_input(
@@ -140,7 +140,7 @@ def config_dialog(callback: Callable, edit: bool | None = None) -> None:
             help="The Stellar Cyber API User Email",
             autocomplete="email",
             placeholder="example.user@stellarcyber.ai",
-            value=config["user"],
+            value=config["user"] if edit else "",
         )
 
         stellar_api_key = st.text_input(
@@ -148,7 +148,7 @@ def config_dialog(callback: Callable, edit: bool | None = None) -> None:
             type="password",
             help="The Stellar Cyber API Key for the User",
             placeholder="API Key",
-            value=config["api_key"],
+            value=config["api_key"] if edit else "",
         )
 
         stellar_detections_version = st.selectbox(
@@ -161,7 +161,7 @@ def config_dialog(callback: Callable, edit: bool | None = None) -> None:
         stellar_verify_ssl = st.checkbox(
             "Verify SSL",
             help="Check to verify the SSL of the Stellar Cyber Host",
-            value=config["verify_ssl"],
+            value=config["verify_ssl"] if edit else True,
         )
 
         submitted = st.form_submit_button("Submit")
