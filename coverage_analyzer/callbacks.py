@@ -26,6 +26,8 @@ def refresh_state():
             or st.session_state.config == st.session_state.stca.host
         ):
             return
+    if st.session_state.get("config", None) is None:
+        return
     logger.info("Refreshing Stellar Cyber API connection.")
     config = st.session_state.configs[st.session_state.config]
     st.session_state.stca = StreamlitCoverageAnalyzerClient.get_scstca_client(
