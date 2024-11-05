@@ -682,7 +682,7 @@ def display_recommendations(
                 use_container_width=True,
             )
             st.caption(
-                "Based on your currently installed data sources and your calculated coverage, these are the top 10 recommended data sources to add to make the most impact to improving your coverage based on the number of techniques and alert types relted to these data sources.",
+                "Based on your currently installed data sources and your calculated coverage, these are the top 10 recommended data sources to add to make the most impact to improving your coverage based on the number of techniques and alert types related to these data sources.",
             )
     except Exception as e:
         logger.error(f"Error displaying recommendations: {str(e)}")
