@@ -107,7 +107,7 @@ def recommended_data_sources():
 
 
 @st.dialog("Add New Configuration")
-def config_dialog(callback: Callable, edit: bool | None = False) -> None:
+def config_dialog(callback: Callable, edit: bool | None = None) -> None:
     """
     Display configuration dialog with improved validation and user feedback.
 
@@ -132,7 +132,7 @@ def config_dialog(callback: Callable, edit: bool | None = False) -> None:
             help="Your Stellar Cyber Host, Ex. example.stellarcyber.cloud",
             autocomplete="host",
             placeholder="example.stellarcyber.ai",
-            value=config["host"] if edit else "",
+            value=config["host"],
         )
 
         stellar_cyber_user = st.text_input(
@@ -140,7 +140,7 @@ def config_dialog(callback: Callable, edit: bool | None = False) -> None:
             help="The Stellar Cyber API User Email",
             autocomplete="email",
             placeholder="example.user@stellarcyber.ai",
-            value=config["user"] if edit else "",
+            value=config["user"],
         )
 
         stellar_api_key = st.text_input(
@@ -148,7 +148,7 @@ def config_dialog(callback: Callable, edit: bool | None = False) -> None:
             type="password",
             help="The Stellar Cyber API Key for the User",
             placeholder="API Key",
-            value=config["api_key"] if edit else "",
+            value=config["api_key"],
         )
 
         stellar_detections_version = st.selectbox(
@@ -161,7 +161,7 @@ def config_dialog(callback: Callable, edit: bool | None = False) -> None:
         stellar_verify_ssl = st.checkbox(
             "Verify SSL",
             help="Check to verify the SSL of the Stellar Cyber Host",
-            value=config["verify_ssl"] if edit else True,
+            value=config["verify_ssl"],
         )
 
         submitted = st.form_submit_button("Submit")
@@ -191,7 +191,7 @@ def config_dialog(callback: Callable, edit: bool | None = False) -> None:
                 st.success("Configuration saved successfully!")
                 st.rerun()
             except Exception as e:
-                logger.error(f"Error saving configuration: {str(e)}")
+                logger.exception(f"Error saving configuration: {str(e)}")
                 st.error(f"Error saving configuration: {str(e)}")
 
 
@@ -255,7 +255,7 @@ def analyze_coverage():
         display_raw_json(compiled_stats)
 
     except Exception as e:
-        logger.error(f"Error in analyze_coverage: {str(e)}")
+        logger.exception(f"Error in analyze_coverage: {str(e)}")
         st.error(
             "An error occurred while analyzing coverage. Please check the logs for details."
         )
@@ -685,7 +685,7 @@ def display_recommendations(
                 "Based on your currently installed data sources and your calculated coverage, these are the top 10 recommended data sources to add to make the most impact to improving your coverage based on the number of techniques and alert types related to these data sources.",
             )
     except Exception as e:
-        logger.error(f"Error displaying recommendations: {str(e)}")
+        logger.exception(f"Error displaying recommendations: {str(e)}")
         st.error("Error displaying recommendations. Please try refreshing the page.")
 
 
