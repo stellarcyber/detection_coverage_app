@@ -74,7 +74,8 @@ def create_plotly_matrix(
     Create a Plotly matrix visualization with gradient-based heatmap.
 
     Args:
-            agg_df: Aggregated DataFrame containing coverage data
+            tactic_coverage: DataFrame containing tactic coverage data
+            technique_coverage: DataFrame containing technique coverage data
 
     Returns:
             Plotly Figure object
@@ -84,17 +85,14 @@ def create_plotly_matrix(
     for tactic in tactic_coverage["tactic"].to_list():
         tactic_row = {"tactic": tactic}
         tactic_techniques = []
-
         for technique_row in technique_coverage.filter(
             pl.col("tactic") == tactic
         ).to_dicts():
-            technique_name = technique_row["technique"]
-            coverage_ratio = technique_row["coverage_ratio"]
-
             # Set technique color based on coverage ratio
-            technique_color = get_coverage_color(coverage_ratio)
+            technique_color = get_coverage_color(technique_row["coverage_ratio"])
+            technique_row["color"] = technique_color
             tactic_techniques.append(
-                {"technique": technique_name, "color": technique_color}
+                technique_row
             )
 
         # Set tactic color based on overall coverage ratio for the tactic
@@ -120,38 +118,36 @@ def create_plotly_matrix(
                     marker={
                         "size": 20,
                         "color": technique_info["color"],
+                        "symbol": "square",
                         "line": {"width": 1, "color": "black"},
                     },
-                    text=technique_info["technique"],
+                    # text=technique_info.get("technique", "").replace(" ", "<br>"),
                     textposition="top center",
+                    textfont={"size": 10},
+                    hovertemplate=f"{technique_info['technique']}<br>Covered: {technique_info['covered_alerts']}<br>Available: {technique_info['total_alerts']}<extra></extra>",
+
                 )
             )
-
-    # Add tactic background color as a rectangle
-    for i, row in enumerate(matrix):
-        fig.add_shape(
-            type="rect",
-            x0=i - 0.5,
-            y0=-0.5,
-            x1=i + 0.5,
-            y1=len(row["techniques"]) - 0.5,
-            fillcolor=row["color"],
-            opacity=0.2,
-            line={"width": 0},
-        )
-
-    # Update the layout for Plotly visualization
+ 
     fig.update_layout(
-        title="MITRE ATT&CK Framework Matrix",
+        # title="MITRE ATT&CK Framework Matrix",
+        autosize=True,
+        uniformtext_minsize=10,
+        uniformtext_mode="show",
         xaxis={
             "title": "Tactics",
             "tickmode": "array",
             "tickvals": list(range(len(matrix))),
             "ticktext": [row["tactic"] for row in matrix],
+            "side": "top",
+        },
+        yaxis={
+            "autorange": "reversed",
+            "visible": False,
         },
         showlegend=False,
         height=800,
-        width=1200,
+        width=1920,
     )
 
     return fig
@@ -177,7 +173,6 @@ def create_coverage_matrix(alert_types_table: dict[str, Any]):
                 st.warning("No aggregated data available to display.", icon="⚠️")
                 return
 
-            # Create graphviz visualization
             fig = create_plotly_matrix(tactic_coverage, technique_coverage)
             try:
                 # Render the graph
