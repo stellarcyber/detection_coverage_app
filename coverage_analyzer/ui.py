@@ -8,7 +8,7 @@ import polars as pl
 from coverage_analyzer import __version__
 from coverage_analyzer.vars import logger, OVERVIEW_MARKDOWN, COOKIES
 from coverage_analyzer.plots import create_coverage_matrix
-from coverage_analyzer.callbacks import save_state, refresh_state
+from coverage_analyzer.callbacks import save_state, refresh_state, reset_metrics_state
 
 
 def header():
@@ -75,6 +75,7 @@ def sidebar():
             options=tenant_options,
             key="selected_tenant",
             index=None,
+            on_change=reset_metrics_state,
         )
         st.sidebar.date_input(
             "Time Range",
@@ -84,6 +85,7 @@ def sidebar():
             ],
             help="Select the time range to run the dashboard for.",
             key="selected_timeframe",
+            on_change=reset_metrics_state,
         )
         st.sidebar.divider()
         if not st.session_state.get(
@@ -276,6 +278,8 @@ def display_metrics(compiled_stats: dict[str, dict[str, Any]]):
     st.caption(
         "Summary of coverage metrics based on selected data sources and time period."
     )
+    if st.session_state.get("orig_metrics", None) is None:
+        st.session_state["orig_metrics"] = compiled_stats
 
     # Display metrics in columns
     col1, col2, col3 = st.columns(3)
@@ -283,7 +287,10 @@ def display_metrics(compiled_stats: dict[str, dict[str, Any]]):
     with col1:
         st.metric(
             label="Tactics Covered",
-            value=f"{compiled_stats.get('tactics', {}).get('tactics_covered_per', 0):.0%}",
+            value=f"{compiled_stats.get('tactics', {}).get('tactics_covered_per', 0.0):.0%}",
+            delta=f"{(compiled_stats.get('tactics', {}).get('tactics_covered_per', 0.0) - st.session_state.get('orig_metrics', {}).get('tactics', {}).get('tactics_covered_per', 0.0)):.0%}"
+            if st.session_state.get("orig_metrics", {}).get("tactics", {}).get("tactics_covered_per", 0.0) != compiled_stats.get('tactics', {}).get('tactics_covered_per', 0.0)
+            else None,
             help="Percentage of tactics covered by selected data sources",
         )
         st.divider()
@@ -302,7 +309,10 @@ def display_metrics(compiled_stats: dict[str, dict[str, Any]]):
     with col2:
         st.metric(
             label="Techniques Covered",
-            value=f"{compiled_stats.get('techniques', {}).get('techniques_covered_per', 0):.0%}",
+            value=f"{compiled_stats.get('techniques', {}).get('techniques_covered_per', 0.0):.0%}",
+            delta=f"{(compiled_stats.get('techniques', {}).get('techniques_covered_per', 0.0) - st.session_state.get('orig_metrics', {}).get('techniques', {}).get('techniques_covered_per', 0.0)):.0%}"
+            if st.session_state.get("orig_metrics", {}).get('techniques', {}).get('techniques_covered_per', 0.0) != compiled_stats.get('techniques', {}).get('techniques_covered_per', 0.0)
+            else None,
             help="Percentage of techniques covered by selected data sources",
         )
         st.divider()
@@ -321,7 +331,10 @@ def display_metrics(compiled_stats: dict[str, dict[str, Any]]):
     with col3:
         st.metric(
             label="Alert Types Covered",
-            value=f"{compiled_stats.get('alert_types', {}).get('alert_types_covered_per', 0):.0%}",
+            value=f"{compiled_stats.get('alert_types', {}).get('alert_types_covered_per', 0.0):.0%}",
+            delta=f"{(compiled_stats.get('alert_types', {}).get('alert_types_covered_per', 0.0) - st.session_state.get('orig_metrics', {}).get('alert_types', {}).get('alert_types_covered_per', 0.0)):.0%}"
+            if st.session_state.get("orig_metrics", {}).get('alert_types', {}).get('alert_types_covered_per', 0.0) != compiled_stats.get('alert_types', {}).get('alert_types_covered_per', 0.0)
+            else None,
             help="Percentage of alert types covered by selected data sources",
         )
         st.divider()
