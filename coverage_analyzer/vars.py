@@ -117,7 +117,7 @@ def read_hosts_config():
                 config = yaml.safe_load(file)
             logger.debug(f"Successfully loaded {len(config)} host configurations")
         except Exception as e:
-            logger.error(f"Error reading hosts config: {str(e)}")
+            logger.exception(f"Error reading hosts config: {str(e)}")
     return config
 
 
