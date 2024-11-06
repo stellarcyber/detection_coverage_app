@@ -413,7 +413,7 @@ def display_coverage_matrix(compiled_stats: dict[str, dict[str, Any]]):
 
     matrix_type = st.radio(
         "Matrix Type",
-        options=["MITRE ATT&CK® Navigator", "Plotly Chart"],
+        options=["Plotly Chart", "MITRE ATT&CK® Navigator"],,
         index=0,
         key="matrix_type",
         horizontal=True,
@@ -440,8 +440,7 @@ def display_coverage_matrix(compiled_stats: dict[str, dict[str, Any]]):
 
     if matrix_type == "Plotly Chart":
         alert_types_table: dict[str, Any] = create_alert_types_table(compiled_stats)
-        chart_state = create_coverage_matrix(alert_types_table)
-        logger.debug(f"Chart State: {chart_state.get('selection')}")  # type: ignore
+        create_coverage_matrix(alert_types_table)
     else:
         components.iframe(
             "https://mitre-attack.github.io/attack-navigator/",
