@@ -15,6 +15,8 @@ def save_state(config: dict[str, Any]):
     configs[host] = config
     st.session_state.configs = configs
     st.session_state.config = host
+    if COOKIES is None:
+        COOKIES = get_cookie_manager()
     COOKIES["configs"] = json.dumps(configs)  # type: ignore
     COOKIES.save()  # type: ignore
 
