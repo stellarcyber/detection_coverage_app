@@ -261,7 +261,6 @@ def analyze_coverage():
         )
 
 
-@st.cache_data(ttl=600)
 def display_raw_json(compiled_stats: dict[str, dict[str, Any]]):
     st.expander(
         "Raw Coverage JSON Data", expanded=False, icon=":material/code:"
@@ -272,7 +271,6 @@ def display_raw_json(compiled_stats: dict[str, dict[str, Any]]):
                """)
 
 
-@st.cache_data
 def display_metrics(compiled_stats: dict[str, dict[str, Any]]):
     st.subheader("Metrics", divider=True)
     st.caption(
