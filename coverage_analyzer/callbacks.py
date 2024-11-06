@@ -20,6 +20,8 @@ def save_state(config: dict[str, Any]):
     COOKIES["configs"] = json.dumps(configs)  # type: ignore
     COOKIES.save()  # type: ignore
 
+def reset_metrics_state():
+    st.session_state["orig_metrics"] = None
 
 def refresh_state():
     if st.session_state.get("stca"):
