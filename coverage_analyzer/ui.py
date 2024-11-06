@@ -413,7 +413,7 @@ def display_coverage_matrix(compiled_stats: dict[str, dict[str, Any]]):
 
     matrix_type = st.radio(
         "Matrix Type",
-        options=["Plotly Chart", "MITRE ATT&CK® Navigator"],,
+        options=["Plotly Chart", "MITRE ATT&CK® Navigator"],
         index=0,
         key="matrix_type",
         horizontal=True,
