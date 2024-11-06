@@ -4,7 +4,7 @@ from typing import Any
 import streamlit as st
 
 from coverage_analyzer.streamlit import StreamlitCoverageAnalyzerClient
-from coverage_analyzer.vars import COOKIES, logger
+from coverage_analyzer.vars import COOKIES, logger, get_cookie_manager
 
 
 def save_state(config: dict[str, Any]):
