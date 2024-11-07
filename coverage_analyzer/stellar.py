@@ -137,7 +137,6 @@ class StellarCyberAPI:
             logger.exception(
                 f"Connection error occurred calling {api_endpoint} after {elapsed:.2f}s: {str(e)}"
             )
-            logger.exception(f"Connection details: {response.raw}")
             raise
         except Timeout as e:
             elapsed = time.time() - start_time
@@ -258,7 +257,7 @@ class StellarCyberAPI:
             List of tenants as dictionaries or names.
         """
         tenants = self._get_data("v1/tenants").get("data", [])
-        if as_options:
+        if as_options and len(tenants) > 0:
             return sorted([i["cust_name"] for i in tenants], key=str.lower)
         return tenants
 
