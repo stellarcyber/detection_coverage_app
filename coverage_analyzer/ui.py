@@ -6,7 +6,7 @@ import streamlit as st
 import streamlit.components.v1 as components
 import polars as pl
 from coverage_analyzer import __version__
-from coverage_analyzer.vars import logger, OVERVIEW_MARKDOWN, COOKIES
+from coverage_analyzer.vars import logger, OVERVIEW_MARKDOWN
 from coverage_analyzer.plots import create_coverage_matrix
 from coverage_analyzer.callbacks import save_state, refresh_state, reset_metrics_state
 
@@ -31,7 +31,6 @@ def header():
 
 
 def sidebar():
-    global COOKIES
     st.sidebar.selectbox(
         "Select Configuration",
         options=st.session_state.get("configs", {}).keys(),
@@ -61,14 +60,18 @@ def sidebar():
             configs = st.session_state.configs
             del configs[st.session_state.config]
             st.session_state.configs = configs
-            COOKIES["configs"] = json.dumps(configs)  # type: ignore
-            COOKIES.save()  # type: ignore
-            st.session_state.config = None
+            st.session_state.cookie_manager["configs"] = json.dumps(configs)
+            st.session_state.cookie_manager.save()
+            st.rerun()
 
     if st.session_state.config:
         refresh_state()
-        tenant_options: list[str] = st.session_state.stca.get_tenants()
-        tenant_options.insert(0, "All Tenants")
+        tenant_options: list[str] | None = st.session_state.stca.get_tenants()
+        if tenant_options is None:
+            tenant_options = []
+            st.sidebar.error("No tenants found. Invalid Stellar Cyber host configuration.")
+        if len(tenant_options) > 0:
+            tenant_options.insert(0, "All Tenants")
         st.sidebar.divider()
         st.sidebar.selectbox(
             label="Select Tenant",
@@ -289,7 +292,10 @@ def display_metrics(compiled_stats: dict[str, dict[str, Any]]):
             label="Tactics Covered",
             value=f"{compiled_stats.get('tactics', {}).get('tactics_covered_per', 0.0):.0%}",
             delta=f"{(compiled_stats.get('tactics', {}).get('tactics_covered_per', 0.0) - st.session_state.get('orig_metrics', {}).get('tactics', {}).get('tactics_covered_per', 0.0)):.0%}"
-            if st.session_state.get("orig_metrics", {}).get("tactics", {}).get("tactics_covered_per", 0.0) != compiled_stats.get('tactics', {}).get('tactics_covered_per', 0.0)
+            if st.session_state.get("orig_metrics", {})
+            .get("tactics", {})
+            .get("tactics_covered_per", 0.0)
+            != compiled_stats.get("tactics", {}).get("tactics_covered_per", 0.0)
             else None,
             help="Percentage of tactics covered by selected data sources",
         )
@@ -311,7 +317,10 @@ def display_metrics(compiled_stats: dict[str, dict[str, Any]]):
             label="Techniques Covered",
             value=f"{compiled_stats.get('techniques', {}).get('techniques_covered_per', 0.0):.0%}",
             delta=f"{(compiled_stats.get('techniques', {}).get('techniques_covered_per', 0.0) - st.session_state.get('orig_metrics', {}).get('techniques', {}).get('techniques_covered_per', 0.0)):.0%}"
-            if st.session_state.get("orig_metrics", {}).get('techniques', {}).get('techniques_covered_per', 0.0) != compiled_stats.get('techniques', {}).get('techniques_covered_per', 0.0)
+            if st.session_state.get("orig_metrics", {})
+            .get("techniques", {})
+            .get("techniques_covered_per", 0.0)
+            != compiled_stats.get("techniques", {}).get("techniques_covered_per", 0.0)
             else None,
             help="Percentage of techniques covered by selected data sources",
         )
@@ -333,7 +342,10 @@ def display_metrics(compiled_stats: dict[str, dict[str, Any]]):
             label="Alert Types Covered",
             value=f"{compiled_stats.get('alert_types', {}).get('alert_types_covered_per', 0.0):.0%}",
             delta=f"{(compiled_stats.get('alert_types', {}).get('alert_types_covered_per', 0.0) - st.session_state.get('orig_metrics', {}).get('alert_types', {}).get('alert_types_covered_per', 0.0)):.0%}"
-            if st.session_state.get("orig_metrics", {}).get('alert_types', {}).get('alert_types_covered_per', 0.0) != compiled_stats.get('alert_types', {}).get('alert_types_covered_per', 0.0)
+            if st.session_state.get("orig_metrics", {})
+            .get("alert_types", {})
+            .get("alert_types_covered_per", 0.0)
+            != compiled_stats.get("alert_types", {}).get("alert_types_covered_per", 0.0)
             else None,
             help="Percentage of alert types covered by selected data sources",
         )
