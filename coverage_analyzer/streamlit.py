@@ -1,26 +1,22 @@
-import json
-
 # import os
 # from collections.abc import Callable
 # from concurrent.futures import ThreadPoolExecutor
 from datetime import date, datetime, timedelta, timezone
-from pathlib import Path
 from typing import Any, Literal
 
 # import machineid
 import pandas as pd
 import polars as pl
-import streamlit as st
+# import streamlit as st
 
 # from st_cookies_manager import EncryptedCookieManager
-from streamlit import cache_data, cache_resource
+from streamlit import cache_data
 # from streamlit.runtime.scriptrunner import add_script_run_ctx
 
 # from coverage_analyzer import __version__
 from coverage_analyzer.mitre import StellarMitre
 from coverage_analyzer.stellar import StellarCyberAPI
 from coverage_analyzer.vars import (
-    APP_DIR,
     DATASOURCE_DISPLAY_NAME_MAP,
     STELLAR_EXTRA_TACTICS_MAP,
     # get_thread_pool_executor,
@@ -239,7 +235,7 @@ class StreamlitCoverageAnalyzerClient:
 
         self._cache: dict[str, Any] = {}
 
-    @st.cache_resource(ttl=600)
+    # @st.cache_resource(ttl=600)
     @staticmethod
     def get_scstca_client(
         name: str,
@@ -329,7 +325,7 @@ class StreamlitCoverageAnalyzerClient:
             Dictionary of alert type hits.
         """
 
-        @cache_data(ttl=self.cache_ttl)
+        # @cache_data(ttl=self.cache_ttl)
         def _get_alert_type_hits(
             _self: StreamlitCoverageAnalyzerClient,
             start_date: date,
@@ -363,7 +359,7 @@ class StreamlitCoverageAnalyzerClient:
             Count of matching alert types.
         """
 
-        @cache_data(ttl=self.cache_ttl)
+        # @cache_data(ttl=self.cache_ttl)
         def _get_matching_alert_types_count_from_hits(
             _self: StreamlitCoverageAnalyzerClient,
             alert_type_hits: dict[str, Any],
@@ -406,7 +402,7 @@ class StreamlitCoverageAnalyzerClient:
             Count of matching alert types.
         """
 
-        @cache_data(ttl=self.cache_ttl)
+        # @cache_data(ttl=self.cache_ttl)
         def _get_matching_alert_types_count_from_ds(
             _self: StreamlitCoverageAnalyzerClient,
             data_sources: list[str],
@@ -460,7 +456,7 @@ class StreamlitCoverageAnalyzerClient:
             Dictionary of tactics statistics for the provided list of tactics.
         """
 
-        @cache_data(ttl=self.cache_ttl)
+        # @cache_data(ttl=self.cache_ttl)
         def _get_tactics_stats(
             _self: StreamlitCoverageAnalyzerClient,
             data_sources: list[str],
@@ -551,7 +547,7 @@ class StreamlitCoverageAnalyzerClient:
             Dictionary of technique statistics for the provided list of tactics.
         """
 
-        @cache_data(ttl=self.cache_ttl)
+        # @cache_data(ttl=self.cache_ttl)
         def _get_technique_stats(
             _self: StreamlitCoverageAnalyzerClient,
             data_sources: list[str],
@@ -667,7 +663,7 @@ class StreamlitCoverageAnalyzerClient:
             Dictionary of alert statistics.
         """
 
-        @cache_data(ttl=self.cache_ttl)
+        # @cache_data(ttl=self.cache_ttl)
         def _get_alert_stats(
             _self: StreamlitCoverageAnalyzerClient,
             alert_type_hits: dict[str, Any],
@@ -729,7 +725,7 @@ class StreamlitCoverageAnalyzerClient:
             Dictionary of data source statistics.
         """
 
-        @cache_data(ttl=self.cache_ttl)
+        # @cache_data(ttl=self.cache_ttl)
         def _get_datasource_stats(
             _self: StreamlitCoverageAnalyzerClient, data_sources: list[str]
         ):
@@ -795,7 +791,7 @@ class StreamlitCoverageAnalyzerClient:
             Dictionary of compiled statistics.
         """
 
-        @cache_data(ttl=self.cache_ttl)
+        # @cache_data(ttl=self.cache_ttl)
         def _compile_stats(
             _self: StreamlitCoverageAnalyzerClient,
             data_sources: list[str],
@@ -911,7 +907,6 @@ class StreamlitCoverageAnalyzerClient:
             List of used data sources as strings
         """
 
-        @cache_data(ttl=self.cache_ttl)
         def _get_used_datasources(
             _self: StreamlitCoverageAnalyzerClient,
             start_date: date,
@@ -959,7 +954,7 @@ class StreamlitCoverageAnalyzerClient:
             List of detection data sources as dictionaries.
         """
 
-        @cache_resource(ttl=self.cache_ttl)
+        @cache_data(ttl=self.cache_ttl)
         def _get_detections_datasources(
             _self: StreamlitCoverageAnalyzerClient, as_options: bool | None = None
         ) -> list[str] | list[dict[str, Any]]:
@@ -976,7 +971,7 @@ class StreamlitCoverageAnalyzerClient:
             List of detections as dictionaries
         """
 
-        @cache_resource(ttl=self.cache_ttl)
+        @cache_data(ttl=self.cache_ttl)
         def _get_detections(
             _self: StreamlitCoverageAnalyzerClient,
             version: Literal["4.3.0", "4.3.1", "4.3.7", "5.1.x", "5.2.x", "5.3.x"],
@@ -1004,7 +999,6 @@ class StreamlitCoverageAnalyzerClient:
             List of detections as dictionaries
         """
 
-        @cache_data(ttl=self.cache_ttl)
         def _get_custom_detections(
             _self: StreamlitCoverageAnalyzerClient,
             tenant_id: str | None,
@@ -1014,9 +1008,9 @@ class StreamlitCoverageAnalyzerClient:
             custom_detections = _self._stellar.get_detections(
                 tenant_id, only_builtin, only_custom
             )
-            if not Path(APP_DIR + "/custom_detections.json").exists():
-                with Path(APP_DIR + "/custom_detections.json").open("w") as file:
-                    json.dump(custom_detections, file)
+            # if not Path(APP_DIR + "/custom_detections.json").exists():
+            #     with Path(APP_DIR + "/custom_detections.json").open("w") as file:
+            #         json.dump(custom_detections, file)
             return custom_detections
 
         return _get_custom_detections(self, tenant_id, only_builtin, only_custom)
@@ -1030,7 +1024,6 @@ class StreamlitCoverageAnalyzerClient:
             List of tenants as strings
         """
 
-        @cache_data(ttl=self.cache_ttl)
         def _get_tenants(_self: StreamlitCoverageAnalyzerClient):
             return _self._stellar.get_tenants(as_options=True)
 
