@@ -67,7 +67,7 @@ python run.py
 
 #### Pull and run container
 ```bash
-docker pull ghcr.io/stellarcyber/detection_coverage_app/coverage_analyzer:latest
+docker pull ghcr.io/stellarcyber/detection_coverage_app/coverage_analyzer:v0.2.0
 docker run -p 8501:8501 coverage_analyzer
 ```
 
