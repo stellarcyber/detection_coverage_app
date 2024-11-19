@@ -16,7 +16,7 @@ def get_coverage_color(ratio):
     return mcolors.to_hex(tuple(color))
 
 
-@st.cache_data(ttl="1h")
+# @st.cache_data(ttl="1h")
 def prepare_coverage_data(
     alert_types_table: dict[str, Any],
 ) -> tuple[pl.DataFrame, pl.DataFrame]:
