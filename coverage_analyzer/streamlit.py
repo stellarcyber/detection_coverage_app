@@ -7,7 +7,7 @@ from typing import Any, Literal
 # import machineid
 import pandas as pd
 import polars as pl
-# import streamlit as st
+import streamlit as st
 
 # from st_cookies_manager import EncryptedCookieManager
 from streamlit import cache_data
@@ -235,7 +235,7 @@ class StreamlitCoverageAnalyzerClient:
 
         self._cache: dict[str, Any] = {}
 
-    # @st.cache_resource(ttl=600)
+    @st.cache_resource(ttl=600)
     @staticmethod
     def get_scstca_client(
         name: str,
@@ -291,6 +291,23 @@ class StreamlitCoverageAnalyzerClient:
             return _self._mitre.get_tactics()
 
         return _get_tactics(self)
+
+    @logger.catch
+    def get_techniques(self) -> list[dict[str, Any]]:
+        """
+        Public method to return a list of techniques from the MITRE ATT&CK framework.
+
+        Returns:
+            List of techniques as dictionaries.
+        """
+
+        @cache_data(ttl=self.cache_ttl)
+        def _get_techniques(
+            _self: StreamlitCoverageAnalyzerClient,
+        ) -> list[dict[str, Any]]:
+            return _self._mitre.get_techniques()
+
+        return _get_techniques(self)
 
     @logger.catch
     def get_tactics_and_techniques(self) -> list[dict[str, Any]]:

@@ -35,7 +35,7 @@ class StellarCyberAPI:
         verify_ssl: Boolean to verify SSL of Stellar Cyber Host, defaults to True
     """
 
-    HTTP_CACHE: str = APP_DIR + "/.http_cache"
+    HTTP_CACHE: str = APP_DIR + "/.stellar_http_cache"
     headers: dict[str, str] = {
         "Content-type": "application/json",
     }
@@ -63,9 +63,11 @@ class StellarCyberAPI:
         self.token: dict[str, Any] = {"access_token": "", "exp": 0}
         Path(APP_DIR).mkdir(exist_ok=True)
         self._session: CacheSession = CacheSession(
-            cache_name=APP_DIR + "/.http_cache",
+            cache_name=self.HTTP_CACHE,
             expire_after=timedelta(hours=1),
-            cache_control=True,
+            stale_if_error=True,
+            retries=3,
+            # cache_control=True,
         )
 
     # @retry(
@@ -314,7 +316,7 @@ class StellarCyberAPI:
         # Use extended timeout for this endpoint since it can return large amounts of data
         detections = self._get_data(
             api_endpoint="v1/custom_security_events",
-            # params={"cust_id": tenant_id} if tenant_id else None,
+            params={"cust_id": tenant_id} if tenant_id else None,
             # timeout=(15, 120),  # 15s connect timeout, 120s read timeout
         ).get("data", [])
         if only_builtin:

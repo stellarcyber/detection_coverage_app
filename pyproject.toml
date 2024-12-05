@@ -1,6 +1,6 @@
 [project]
 name = "coverage-analyzer"
-version = "0.2.0"
+version = "0.2.1"
 description = "A Python Streamlit app for analyzing security coverage using the Stellar Cyber API and MITRE ATT&CK framework"
 readme = "README.md"
 license = { file = "LICENSE.md" }
