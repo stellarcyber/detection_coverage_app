@@ -50,18 +50,20 @@ class StellarMitre:
     """
 
     FILE_DIR = APP_DIR + "/mitre_files/"
-    HTTP_CACHE = APP_DIR + "/.http_cache"
+    HTTP_CACHE = APP_DIR + "/.mitre_http_cache"
     ENTERPRISE_ATTACK_URL = "https://raw.githubusercontent.com/mitre/cti/master/enterprise-attack/enterprise-attack.json"
-    CACHE_SIZE = 1024  # LRU cache size for frequently accessed data
+    # CACHE_SIZE = 1024  # LRU cache size for frequently accessed data
 
     def __init__(self) -> None:
         """Initialize StellarMitre with optimized caching and file handling."""
         try:
             Path(APP_DIR).mkdir(exist_ok=True)
             self._session = CacheSession(
-                cache_name=APP_DIR + "/.http_cache",
+                cache_name=self.HTTP_CACHE,
                 expire_after=timedelta(hours=1),
-                cache_control=True,
+                stale_if_error=True,
+                retries=3,
+                # cache_control=True,
             )
             self._init_files()
             self.enterprise_attack = self._load_enterprise_attack()
@@ -77,9 +79,8 @@ class StellarMitre:
 
             if not file_path.is_file():
                 logger.info("Downloading MITRE ATT&CK STIX file...")
-                response = self._session.get(
-                    self.ENTERPRISE_ATTACK_URL, timeout=(5, 30)
-                )
+                with self._session as session:
+                    response = session.get(self.ENTERPRISE_ATTACK_URL, timeout=(5, 30))
                 response.raise_for_status()
 
                 if response.content:
@@ -222,10 +223,11 @@ class StellarMitre:
     ) -> list[str] | list[dict[str, Any]]:
         """Return a list of data sources from detections.stellarcyber.ai"""
         try:
-            response = self._session.get(
-                "https://detections-api.herokuapp.com/get-data-sources/",
-                timeout=(5, 30),
-            )
+            with self._session as session:
+                response = session.get(
+                    "https://detections-api.herokuapp.com/get-data-sources/",
+                    timeout=(5, 30),
+                )
             response.raise_for_status()
             datasources = response.json().get("data_sources", [])
 
@@ -260,11 +262,12 @@ class StellarMitre:
     ) -> list[dict[str, Any]]:
         """Return a list of detections from detections.stellarcyber.ai"""
         try:
-            response = self._session.post(
-                "https://detections-api.herokuapp.com/get-all-detections",
-                data={"version": DETECTION_VERSIONS[version]},
-                timeout=(5, 30),
-            )
+            with self._session as session:
+                response = session.post(
+                    "https://detections-api.herokuapp.com/get-all-detections",
+                    data={"version": DETECTION_VERSIONS[version]},
+                    timeout=(5, 30),
+                )
             response.raise_for_status()
 
             detections = response.json().get("detections", [])

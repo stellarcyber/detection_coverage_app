@@ -1,6 +1,6 @@
 [project]
 name = "coverage-analyzer"
-version = "0.2.0"
+version = "0.2.1"
 description = "A Python Streamlit app for analyzing security coverage using the Stellar Cyber API and MITRE ATT&CK framework"
 readme = "README.md"
 license = { file = "LICENSE.md" }
@@ -12,6 +12,7 @@ maintainers = [
 requires-python = ">=3.10"
 dependencies = [
     "great-tables>=0.13.0",
+    "kaleido==0.2.1",
     "loguru>=0.7.2",
     "matplotlib>=3.9.2",
     "mitreattack-python>=3.0.6",
@@ -31,9 +32,12 @@ dependencies = [
     "watchdog>=5.0.3",
 ]
 
-
 [project.scripts]
-coverage-analyzer = "app:main"
+coverage-analyzer = "run:main"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
 
 [project.urls]
 Homepage = "https://stellarcyber.ai"

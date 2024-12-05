@@ -69,7 +69,9 @@ def sidebar():
         tenant_options: list[str] | None = st.session_state.stca.get_tenants()
         if tenant_options is None:
             tenant_options = []
-            st.sidebar.error("No tenants found. Invalid Stellar Cyber host configuration.")
+            st.sidebar.error(
+                "No tenants found. Invalid Stellar Cyber host configuration."
+            )
         if len(tenant_options) > 0:
             tenant_options.insert(0, "All Tenants")
         st.sidebar.divider()
@@ -396,16 +398,26 @@ def display_coverage_matrix(compiled_stats: dict[str, dict[str, Any]]):
     # Generate technique scores based on coverage data
     technique_scores = {}
     technique_stats = compiled_stats.get("techniques", {}).get("technique_stats", {})
-    custom_detections = st.session_state.stca.get_custom_detections()
+    custom_detections: list[dict[str, Any]] | None = (
+        st.session_state.stca.get_custom_detections()
+    )
 
-    technique_ids_map: dict[str, str] = {
-        cd.get("xdr_event", {}).get("technique", {}).get("name", ""): cd.get(
-            "xdr_event", {}
-        )
-        .get("technique", {})
-        .get("id", "")
-        for cd in custom_detections
-    }
+    if custom_detections is None or len(custom_detections) == 0:
+        techniques_list = st.session_state.stca.get_techniques()
+        technique_ids_map: dict[str, str] = {
+            tech["name"]: tech["external_id"]
+            for tech in techniques_list
+            if (tech["external_id"] != "" and tech["name"] != "")
+        }
+    else:
+        technique_ids_map: dict[str, str] = {
+            cd.get("xdr_event", {}).get("technique", {}).get("name", ""): cd.get(
+                "xdr_event", {}
+            )
+            .get("technique", {})
+            .get("id", "")
+            for cd in custom_detections
+        }
 
     for tactic_techniques in technique_stats.values():
         for technique_id, stats in tactic_techniques.items():

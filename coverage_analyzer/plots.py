@@ -91,9 +91,7 @@ def create_plotly_matrix(
             # Set technique color based on coverage ratio
             technique_color = get_coverage_color(technique_row["coverage_ratio"])
             technique_row["color"] = technique_color
-            tactic_techniques.append(
-                technique_row
-            )
+            tactic_techniques.append(technique_row)
 
         # Set tactic color based on overall coverage ratio for the tactic
         tactic_row["techniques"] = tactic_techniques
@@ -122,17 +120,16 @@ def create_plotly_matrix(
                         "line": {"width": 1, "color": "black"},
                     },
                     # text=technique_info.get("technique", "").replace(" ", "<br>"),
-                    textposition="top center",
-                    textfont={"size": 10},
+                    # textposition="top center",
+                    # textfont={"size": 10},
                     hovertemplate=f"{technique_info['technique']}<br>Covered: {technique_info['covered_alerts']}<br>Available: {technique_info['total_alerts']}<extra></extra>",
-
                 )
             )
- 
+
     fig.update_layout(
         # title="MITRE ATT&CK Framework Matrix",
         autosize=True,
-        uniformtext_minsize=10,
+        uniformtext_minsize=12,
         uniformtext_mode="show",
         xaxis={
             "title": "Tactics",
@@ -146,11 +143,128 @@ def create_plotly_matrix(
             "visible": False,
         },
         showlegend=False,
-        height=800,
-        width=1920,
+        height=600,
+        width=1200,
     )
 
     return fig
+
+
+# def create_plotly_matrix(
+#     tactic_coverage: pl.DataFrame, technique_coverage: pl.DataFrame
+# ) -> go.Figure:
+#     """
+#     Create a Plotly heatmap visualization with gradient-based coloring.
+
+#     Args:
+#             tactic_coverage: DataFrame containing tactic coverage data
+#             technique_coverage: DataFrame containing technique coverage data
+
+#     Returns:
+#             Plotly Figure object
+#     """
+#     matrix = []
+
+#     for tactic in tactic_coverage["tactic"].to_list():
+#         tactic_row = {"tactic": tactic}
+#         tactic_techniques = []
+#         for technique_row in technique_coverage.filter(
+#             pl.col("tactic") == tactic
+#         ).to_dicts():
+#             # Set technique color based on coverage ratio
+#             technique_color = get_coverage_color(technique_row["coverage_ratio"])
+#             technique_row["color"] = technique_color
+#             tactic_techniques.append(technique_row)
+
+#         # Set tactic color based on overall coverage ratio for the tactic
+#         tactic_row["techniques"] = tactic_techniques
+#         tactic_row["color"] = get_coverage_color(
+#             tactic_coverage.filter(pl.col("tactic") == tactic)["tactic_coverage_ratio"][
+#                 0
+#             ]
+#         )
+
+#         matrix.append(tactic_row)
+
+#     # Compute the maximum number of techniques per tactic
+#     max_techniques = max(len(row["techniques"]) for row in matrix)
+
+#     # Create data structures for the heatmap
+#     z = []  # 2D array of coverage ratios
+#     text = []  # 2D array of hover texts
+
+#     for row in matrix:
+#         coverage_ratios = [tech["coverage_ratio"] for tech in row["techniques"]]
+#         technique_names = [tech["technique"] for tech in row["techniques"]]
+#         covered_alerts = [tech["covered_alerts"] for tech in row["techniques"]]
+#         total_alerts = [tech["total_alerts"] for tech in row["techniques"]]
+
+#         # Pad lists to the maximum length with None or empty strings
+#         pad_length = max_techniques - len(coverage_ratios)
+#         coverage_ratios += [None] * pad_length
+#         technique_names += [""] * pad_length
+#         covered_alerts += [""] * pad_length
+#         total_alerts += [""] * pad_length
+
+#         z.append(coverage_ratios)
+#         text.append(
+#             [
+#                 f"{technique_names[i]}<br>Covered: {covered_alerts[i]}<br>Available: {total_alerts[i]}"
+#                 if technique_names[i]
+#                 else ""
+#                 for i in range(max_techniques)
+#             ]
+#         )
+
+#     # Transpose z and text to match the heatmap's expected format
+#     import numpy as np
+
+#     z = np.array(z).T.tolist()
+#     text = np.array(text).T.tolist()
+
+#     # Define custom colorscale based on coverage ratios
+#     colorscale = [
+#         [0.0, "red"],
+#         [0.25, "orange"],
+#         [0.5, "yellow"],
+#         # [0.75, "green"],
+#         [1.0, "green"],
+#     ]
+
+#     # Create the heatmap
+#     fig = go.Figure(
+#         data=go.Heatmap(
+#             z=z,
+#             x=[row["tactic"] for row in matrix],
+#             y=list(range(max_techniques)),
+#             text=text,
+#             texttemplate="%{text}",
+#             hoverinfo="text",
+#             colorscale=colorscale,
+#             zmin=0,
+#             zmax=1,
+#             colorbar={"title": "Coverage Ratio"},
+#             xgap=0.8,
+#             ygap=0.8,
+#             showscale=False,
+#         )
+#     )
+
+#     fig.update_layout(
+#         xaxis={
+#             "title": "Tactics",
+#             "side": "top",
+#         },
+#         yaxis={"visible": False, "autorange": "reversed"},
+#         showlegend=False,
+#         height=600,
+#         width=1200,
+#         autosize=True,
+#         uniformtext_minsize=10,
+
+#     )
+
+#     return fig
 
 
 @st.fragment
@@ -177,7 +291,7 @@ def create_coverage_matrix(alert_types_table: dict[str, Any]):
             try:
                 # Render the graph
                 plotly_state = st.plotly_chart(
-                    fig, use_container_width=True, on_select="rerun"
+                    fig, use_container_width=False, on_select="rerun"
                 )
             except Exception as e:
                 logger.error(f"Error displaying matrix: {str(e)}")

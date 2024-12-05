@@ -1,7 +1,6 @@
 > [!IMPORTANT]  
 > 11/2/2024: **Important Update**
-> Major changes to the application have been made. Please review the updated documentation for the latest information. 
-
+> Major changes to the application have been made. Please review the updated documentation for the latest information.
 
 # Coverage Analyzer
 
@@ -9,65 +8,127 @@ A Python Streamlit application for analyzing security coverage using the Stellar
 
 ## Quick Start
 
-### Manual Installation
+### Python Installation
 
-#### Using uv (Recommended)
-Clone repository
-```bash
-git clone https://github.com/stellarcyber/detection_coverage_app.git
-cd detection_coverage_app
-```
-Sync dependencies
-```bash
-uv sync
-```
+---
 
-Run with uv
-```bash
-uv run run.py
-```
-OR
-```bash
-uv run streamlit run app.py
-```
+#### Using uv (Highly Recommended)
 
-#### Using Pip"
-Clone repository
-```bash
-git clone https://github.com/stellarcyber/detection_coverage_app.git
-cd detection_coverage_app
-```
+---
 
-Create and activate virtual environment
-```bash
-python3 -m venv .venv
-source .venv/bin/activate  # Unix/macOS
-```
+##### Install uv
 
-or for Windows
-```bash
-.venv\Scripts\activate
-```
+If you don't already have `uv` installed, you can follow instructions [here](https://docs.astral.sh/uv/getting-started/installation/)
 
-Install dependencies
-```bash
-pip install -r requirements.txt
-```
+---
 
-Run using streamlit
-```bash
-streamlit run app.py
-```
-OR
-```bash
-python run.py
-```
+##### Download and Run or Install
+
+1. Clone repository
+
+   ```bash
+   git clone https://github.com/stellarcyber/detection_coverage_app.git
+   ```
+
+2. Change directory to the project directory
+
+   ```bash
+   cd detection_coverage_app
+   ```
+
+3. To just run the app:
+
+   ```bash
+   uv run coverage-analyzer
+   ```
+
+   OR
+
+   ```bash
+   uv run run.py
+   ```
+
+   OR
+
+   ```bash
+   uv run streamlit run app.py
+   ```
+
+4. To install the app globally as a CLI tool (make sure to run within the project directory):
+   ```bash
+   uv tool install --editable ./
+   ```
+   When completed, you can run the app from anywhere in your terminal (not just within the project directory):
+   ```bash
+   coverage-analyzer
+   ```
+   OR
+   ```bash
+   coverage-analyzer --headless
+   ```
+
+---
+
+##### Additional Info
+
+- If for any reason after using the `uv tool install` command you want to uninstall the app, you can do so by running:
+
+  ```bash
+  uv tool uninstall coverage-analyzer
+  ```
+
+- If you run into an issue after installing globally where the command is not found, you can run the following to ensure the uv tools dir is in your PATH:
+  ```bash
+  uv tool update-shell
+  ```
+
+#### Using Pip
+
+---
+
+1. Clone repository
+
+   ```bash
+   git clone https://github.com/stellarcyber/detection_coverage_app.git
+   cd detection_coverage_app
+   ```
+
+2. Create and activate virtual environment
+
+   ```bash
+   python3 -m venv .venv
+   source .venv/bin/activate
+   ```
+
+   or for Windows
+
+   ```bash
+   .venv\Scripts\activate
+   ```
+
+3. Install dependencies
+
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+4. Run using streamlit
+   ```bash
+   streamlit run app.py
+   ```
+   OR
+   ```bash
+   python run.py
+   ```
 
 ### Docker Usage
 
-#### Pull and run container
+---
+
+#### Build and run container
+
 ```bash
-docker pull ghcr.io/stellarcyber/detection_coverage_app/coverage_analyzer:v0.2.0
+docker build -t coverage_analyzer .
 docker run -p 8501:8501 coverage_analyzer
 ```
 
