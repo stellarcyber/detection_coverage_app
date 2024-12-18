@@ -955,7 +955,7 @@ class StreamlitCoverageAnalyzerClient:
 
             return sorted(used_datasources, key=str.lower)
 
-        return _get_used_datasources(self, start_date, end_date)
+        return _get_used_datasources(self, start_date, end_date, tenant_name)
 
     @logger.catch
     def get_detections_datasources(
