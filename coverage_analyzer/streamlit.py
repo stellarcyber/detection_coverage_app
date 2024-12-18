@@ -235,7 +235,7 @@ class StreamlitCoverageAnalyzerClient:
 
         self._cache: dict[str, Any] = {}
 
-    # @st.cache_resource(ttl=600)
+    @st.cache_resource(ttl=600)
     @staticmethod
     def get_scstca_client(
         name: str,
