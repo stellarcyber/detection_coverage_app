@@ -19,6 +19,7 @@ def save_state(config: dict[str, Any]):
 
 def reset_metrics_state():
     st.session_state["orig_metrics"] = None
+    st.session_state["selected_data_sources"] = []
 
 
 def refresh_state():
