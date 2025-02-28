@@ -6,7 +6,7 @@ import streamlit as st
 import streamlit.components.v1 as components
 import polars as pl
 from coverage_analyzer import __version__
-from coverage_analyzer.vars import logger, OVERVIEW_MARKDOWN
+from coverage_analyzer.vars import logger, OVERVIEW_MARKDOWN, DETECTION_VERSIONS
 from coverage_analyzer.plots import create_coverage_matrix
 from coverage_analyzer.callbacks import save_state, refresh_state, reset_metrics_state
 
@@ -122,6 +122,10 @@ def config_dialog(callback: Callable, edit: bool | None = None) -> None:
             callback: Function to call with new configuration
             edit: Whether this is an edit of existing config
     """
+    
+    detections_options_list = list(DETECTION_VERSIONS.keys())
+    detections_index = None
+    
     if edit:
         config = st.session_state.configs[st.session_state.config]
     else:
@@ -129,7 +133,7 @@ def config_dialog(callback: Callable, edit: bool | None = None) -> None:
             "host": "",
             "user": "",
             "api_key": "",
-            "version": "5.2.x",
+            "version": detections_options_list[-2],
             "verify_ssl": True,
         }
 
@@ -157,12 +161,15 @@ def config_dialog(callback: Callable, edit: bool | None = None) -> None:
             placeholder="API Key",
             value=config["api_key"],
         )
-
+        
+        if config["version"] in detections_options_list:
+            detections_index = detections_options_list.index(config["version"])
+        
         stellar_detections_version = st.selectbox(
             "Stellar Cyber Platform Version",
             help="The version of the Stellar Cyber Platform we are connecting to.",
-            options=["4.3.0", "4.3.1", "4.3.7", "5.1.x", "5.2.x", "5.3.x"],
-            index=4,
+            options=detections_options_list,
+            index=detections_index,
         )
 
         stellar_verify_ssl = st.checkbox(
