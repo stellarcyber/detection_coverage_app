@@ -135,6 +135,7 @@ class StellarVersion(str, Enum):
     V5_1_X = "5.1.x"
     V5_2_X = "5.2.x"
     V5_3_X = "5.3.x"
+    V5_4_X = "5.4.x"
 
 
 # Enhanced cache session with connection pooling
@@ -148,6 +149,7 @@ DETECTION_VERSIONS = {
     "5.1.x": "5.1.1",
     "5.2.x": "5.2.0",
     "5.3.x": "5.3.0",
+    "5.4.x": "5.4.0"
 }
 
 DATASOURCE_DISPLAY_NAME_MAP = {
